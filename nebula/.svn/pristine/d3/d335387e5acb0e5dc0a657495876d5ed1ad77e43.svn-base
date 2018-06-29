@@ -1,0 +1,44 @@
+package cn.tentact.nebula.user
+
+import java.util.Map
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import cn.tentact.nebula.db.dao.I_UserDao
+
+/**
+ * 用户模块业务类
+ */
+@Service
+class UserService implements I_UserService {
+
+	@Autowired
+	I_UserDao i_UserDao;
+
+	override searchUsernamePassword(Map map) {
+		var record = i_UserDao.searchUsernamePassword(map);
+		return record;
+	}
+
+	override searchInfo(String username) {
+		var record = i_UserDao.searchInfo(username);
+		return record;
+	}
+
+	@Transactional
+	override add(Map map) {
+		var i = i_UserDao.add(map);
+		return i;
+	}
+
+	override recoverPassword(Map map) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	@Transactional
+	override updateLoginTime(String username) {
+		var i = i_UserDao.updateLoginTime(username);
+		return i;
+	}
+
+}

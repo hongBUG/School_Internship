@@ -1,0 +1,72 @@
+package cn.tentact.nebula.company
+
+import cn.tentact.nebula.web.ResponseBean
+
+/**
+ * 企业模块网络接口
+ */
+interface I_CompanyController {
+	/**
+	 * 查询企业记录总数
+	 * @param name 企业名称
+	 * @param domain 领域
+	 * @return 结果集
+	 */
+	def ResponseBean searchCount(String name, String domain);
+
+	/**
+	 * 查询企业列表
+	 * @param name 企业名称
+	 * @param domain 领域
+	 * @param start 起始值
+	 * @param length 偏移量
+	 * @return 结果集
+	 */
+	def ResponseBean searchList(String name, String domain, int start, int length);
+
+	/**
+	 * 添加记录
+	 * @param name 企业名称
+	 * @param domain 业务领域
+	 * @param type 企业性质
+	 * @param property 企业类型
+	 * @param scale 企业规模
+	 * @param address 公司地址
+	 * @param tel 联系电话
+	 * @param introduction 企业介绍
+	 * @return 结果集
+	 */
+	def ResponseBean add(String name, String domain, String type, String property, String scale, String address,
+		String tel, String introduction);
+
+	/**
+	 * 查询企业信息
+	 * @paran id 企业ID
+	 * @return 结果集
+	 */
+	def ResponseBean searchById(int id);
+
+	/**
+	 * 修改企业记录
+	 * @param id 企业ID
+	 * @param name 企业名称
+	 * @param domain 业务领域
+	 * @param type 企业性质
+	 * @param property 企业类型
+	 * @param scale 企业规模
+	 * @param address 公司地址
+	 * @param tel 联系电话
+	 * @param introduction 企业介绍
+	 * @return 结果集
+	 */
+	def ResponseBean update(int id, String name, String domain, String type, String property, String scale,
+		String address, String tel, String introduction);
+
+	/**
+	 * 删除企业记录
+	 * @param id 企业ID
+	 * @return 结果集
+	 */
+	def ResponseBean deleteById(Integer[] id);
+
+}

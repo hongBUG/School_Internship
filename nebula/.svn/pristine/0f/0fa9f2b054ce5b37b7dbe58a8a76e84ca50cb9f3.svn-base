@@ -1,0 +1,25 @@
+package cn.tentact.nebula.privilege
+
+import org.springframework.stereotype.Service
+import cn.tentact.nebula.db.dao.I_PrivilegeDao
+import org.springframework.beans.factory.annotation.Autowired
+
+/**
+ * 权限模块业务类
+ */
+@Service
+class PrivilegeService implements I_PrivilegeService {
+	@Autowired
+	I_PrivilegeDao i_PrivilegeDao = null;
+
+	override searchUserPrivilege(String username) {
+		var list = i_PrivilegeDao.searchUserPrivilege(username);
+		return list;
+	}
+	
+	override searchUserPermissionResource(String username) {
+		var list=i_PrivilegeDao.searchUserPermissionResource(username);
+		return list;
+	}
+
+}

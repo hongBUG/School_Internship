@@ -1,0 +1,113 @@
+package cn.tentact.nebula.user
+
+import cn.tentact.nebula.privilege.I_PrivilegeService
+import cn.tentact.nebula.shiro.JwtUtil
+import cn.tentact.nebula.web.ResponseBean
+import java.util.List
+import java.util.concurrent.TimeUnit
+import javax.servlet.http.HttpServletRequest
+import org.apache.shiro.SecurityUtils
+import org.apache.shiro.authz.annotation.RequiresAuthentication
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@RequestMapping("/user")
+class UserController implements I_UserController {
+	@Autowired
+	RedisTemplate redisTemplate;
+	@Autowired
+	I_UserService i_UserService;
+	@Autowired
+	I_PrivilegeService i_PrivilegeService;
+
+	@RequestMapping("/login")
+	override login(String username, String password, HttpServletRequest request) {
+		var record = i_UserService.searchUsernamePassword(#{"username" -> username});
+		if(record !== null) {
+			var pwd = record.get("password") as String;
+			if(pwd == password) {
+				var token = JwtUtil.sign(username, password);
+				redisTemplate.opsForHash.putAll(username, #{"password" -> password, "token" -> token}); // 把令牌和密码写入到Redis
+				redisTemplate.expire(username, JwtUtil.EXPIRE_TIME, TimeUnit.MILLISECONDS); // 设置Redis缓存令牌的超时时间（与令牌过期时间一致）
+				var privilege = i_PrivilegeService.searchUserPrivilege(username); // 查询用户权限
+				var resource = i_PrivilegeService.searchUserPermissionResource(username); // 查询用户可以使用的模块
+				i_UserService.updateLoginTime(username); // 更新最后的登陆时间
+				return new ResponseBean(200, "login success", true,
+					#{"token" -> token, "privilege" -> privilege, "resource" -> resource});
+			} else {
+				return new ResponseBean(200, "login fail", false, null);
+			}
+		} else {
+			return new ResponseBean(200, "login fail", false, null);
+		}
+	}
+
+	@RequestMapping("/isLogin")
+	override isLogin(@RequestHeader("Authorization") String token) {
+		var subject = SecurityUtils.subject;
+		var bool = subject.isAuthenticated();
+		var List privilege = null;
+		var List resource = null;
+		if(bool) {
+			var username = JwtUtil.getUsername(token);
+			privilege = i_PrivilegeService.searchUserPrivilege(username); // 查询用户权限
+			resource = i_PrivilegeService.searchUserPermissionResource(username); // 查询用户可以使用的模块
+		}
+		return new ResponseBean(200, null, bool, #{"privilege" -> privilege, "resource" -> resource});
+	}
+
+	@RequestMapping("/searchInfo")
+	@RequiresAuthentication
+	override searchInfo(@RequestHeader("Authorization") String token) {
+		var username = JwtUtil.getUsername(token);
+		var record = i_UserService.searchInfo(username);
+
+		return new ResponseBean(200, null, true, #{"userinfo" -> record});
+	}
+
+	@RequestMapping("/register")
+	override register(String username, String password) {
+		var i = i_UserService.add(#{"username" -> username, "password" -> password, "identity" -> "求职者", "role" -> 5});
+		if(i == 1) {
+			var token = JwtUtil.sign(username, password);
+			redisTemplate.opsForHash.putAll(username, #{"password" -> password, "token" -> token});
+			return new ResponseBean(200, "注册成功", true, token);
+		}
+		return new ResponseBean(200, "用户名被占用", false, null);
+	}
+
+	@RequestMapping("recoverPassword")
+	override recoverPassword(String username, String email) {
+		var map = #{"username" -> username, "email" -> email};
+		i_UserService.recoverPassword(map);
+		return new ResponseBean(200, "密码找回成功", true, null);
+
+	}
+
+	@RequestMapping("/refreshToken")
+	@RequiresAuthentication
+	override refreshToken(@RequestHeader("Authorization") String token) {
+		var username = JwtUtil.getUsername(token);
+		var map = redisTemplate.opsForHash.entries(username);
+		var password = map.get("password") as String;
+		var newToken = JwtUtil.sign(username, password);
+		redisTemplate.opsForHash.putAll(username, #{"password" -> password, "token" -> newToken}); // 把令牌和密码写入到Redis
+		redisTemplate.expire(username, JwtUtil.EXPIRE_TIME, TimeUnit.MILLISECONDS); // 设置Redis缓存令牌的超时时间（与令牌过期时间一致）
+		return new ResponseBean(200, "令牌更新成功", true, #{"token" -> newToken});
+	}
+
+	@RequestMapping("/logout")
+	@RequiresAuthentication
+	override logout(@RequestHeader("Authorization") String token) {
+		var username = JwtUtil.getUsername(token);
+		var subject = SecurityUtils.subject;
+		subject.logout; // 销毁Shiro登陆认证
+		redisTemplate.delete(username); // 销毁redis缓存的令牌
+		return new ResponseBean(200, "已经退出系统", true, null);
+	}
+
+}

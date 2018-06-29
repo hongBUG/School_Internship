@@ -1,0 +1,51 @@
+package cn.tentact.nebula.company
+
+import java.util.List
+import java.util.Map
+
+/**
+ * 企业模块业务接口
+ */
+interface I_CompanyService {
+	/**
+	 * 查询企业记录总数
+	 * @param map 参数
+	 * @return 记录总数
+	 */
+	def long searchCount(Map map);
+
+	/**
+	 * 查询企业列表
+	 * @param map 参数
+	 * @return 结果集
+	 */
+	def List searchList(Map map);
+	
+	/**
+	 * 查询企业信息
+	 * @param id 企业ID
+	 * @return 结果集
+	 */
+	def Map searchById(int id);
+
+	/**
+	 * 添加记录
+	 * @param map 企业信息
+	 * @return 操作记录数
+	 */
+	def int add(Map map);
+	
+	/**
+	 * 修改企业记录
+	 * @param map 企业信息
+	 * @return 执行记录数
+	 */
+	def int update(Map map);
+	
+	/**
+	 * 删除企业记录
+	 * @param map 参数
+	 * @return 执行记录数
+	 */
+	def int deleteById(Map map);
+}

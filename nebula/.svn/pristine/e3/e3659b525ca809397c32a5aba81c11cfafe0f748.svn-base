@@ -1,0 +1,9 @@
+package cn.tentact.nebula.test
+
+import org.eclipse.xtend.lib.annotations.Data
+
+@Data
+class Company {
+	String id;
+	String name;
+}

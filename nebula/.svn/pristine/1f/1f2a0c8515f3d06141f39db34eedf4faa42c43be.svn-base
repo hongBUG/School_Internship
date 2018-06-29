@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tentact.nebula.db.dao.I_PrivilegeDao">
+	<select id="searchUserPrivilege" parameterType="String" resultType="String">
+		SELECT
+		p.id
+		FROM
+		`user` u
+		JOIN
+		role r
+		ON
+		JSON_CONTAINS (u.role, JSON_ARRAY(r.id))
+		AND
+		u.username = #{username}
+		JOIN
+		privilege p
+		ON
+		JSON_CONTAINS (r.privilege,JSON_ARRAY (p.id))
+	</select>
+	<select id="searchUserPermissionResource" parameterType="String" resultType="int">
+		SELECT
+			DISTINCT p.resource_id
+		FROM
+			`user` u
+		JOIN 
+			role r 
+		ON 
+			JSON_CONTAINS (u.role, JSON_ARRAY(r.id))
+		AND 
+			u.username = #{username}
+		JOIN 
+			privilege p 
+		ON 
+			JSON_CONTAINS (r.privilege, JSON_ARRAY (p.id))
+	</select>
+</mapper>

@@ -1,0 +1,43 @@
+package cn.tentact.nebula.user
+
+import java.util.Map
+
+/**
+ * 用户模块业务接口
+ */
+interface I_UserService {
+	/**
+	 * 获取登陆信息
+	 * @param map 参数
+	 * @return 结果集
+	 */
+	def Map searchUsernamePassword(Map map);
+
+	/**
+	 * 查询用户信息
+	 * @param username 用户名
+	 * @return 结果集
+	 */
+	def Map searchInfo(String username);
+
+	/**
+	 * 添加用户记录
+	 * @param map 用户信息
+	 * @return 执行记录数
+	 */
+	def int add(Map map);
+
+	/**
+	 * 找回密码
+	 * @param map 参数
+	 */
+	def void recoverPassword(Map map);
+
+	/**
+	 * 更新用户登陆时间
+	 * @param username 用户名
+	 * @return 执行记录数
+	 */
+	def int updateLoginTime(String username);
+
+}

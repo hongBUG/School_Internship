@@ -1,0 +1,51 @@
+package cn.tentact.nebula.company
+
+import cn.tentact.nebula.db.dao.I_CompanyDao
+import java.util.Map
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+/**
+ * 企业模块业务类
+ */
+@Service
+class CompanyService implements I_CompanyService {
+	@Autowired
+	I_CompanyDao i_CompanyDao;
+
+	override searchCount(Map map) {
+		var count = i_CompanyDao.searchCount(map);
+		return count;
+	}
+
+	override searchList(Map map) {
+		var list = i_CompanyDao.searchList(map);
+		return list;
+	}
+
+	@Transactional
+	override add(Map map) {
+		var i = i_CompanyDao.add(map);
+		return i;
+	}
+
+	override searchById(int id) {
+		var record = i_CompanyDao.searchById(id);
+		return record;
+
+	}
+
+	@Transactional
+	override update(Map map) {
+		var i = i_CompanyDao.update(map);
+		return i;
+	}
+
+	@Transactional
+	override deleteById(Map map) {
+		var i = i_CompanyDao.deleteById(map);
+		return i;
+	}
+
+}

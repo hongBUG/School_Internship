@@ -1,0 +1,24 @@
+package cn.tentact.nebula.db.dao
+
+import java.util.List
+import org.apache.ibatis.annotations.Mapper
+
+/**
+ * privilege表Dao接口
+ */
+@Mapper
+interface I_PrivilegeDao {
+	/**
+	 * 查询用户权限
+	 * @param username 用户名
+	 * @return 结果集
+	 */
+	def List<String> searchUserPrivilege(String username);
+
+	/**
+	 * 查询用户可以使用的模块
+	 * @param username 用户名
+	 * @return 结果集
+	 */
+	def List<Integer> searchUserPermissionResource(String username);
+}

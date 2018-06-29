@@ -1,0 +1,62 @@
+package cn.tentact.nebula.user
+
+import javax.servlet.http.HttpServletRequest
+import cn.tentact.nebula.web.ResponseBean
+
+/**
+ * 用户模块网络接口
+ */
+interface I_UserController {
+	/**
+	 * 登录系统
+	 * @param username 用户名
+	 * @param password 密码
+	 * @param session 会话
+	 * @return 结果集
+	 */
+	def ResponseBean login(String username, String password, HttpServletRequest request);
+
+	/**
+	 * 判断用户是否已经登陆过
+	 * @param token 令牌
+	 * @return 结果集
+	 */
+	def ResponseBean isLogin(String token);
+
+	/**
+	 * 查询用户信息
+	 * @param token 令牌
+	 * @return 结果集
+	 */
+	def ResponseBean searchInfo(String token);
+
+	/**
+	 * 注册用户
+	 * @param username 用户名
+	 * @param password 密码
+	 * @return 结果集
+	 */
+	def ResponseBean register(String username, String password);
+
+	/**
+	 * 查询用户密码
+	 * @param username 用户名
+	 * @param email 邮箱
+	 * @return 结果集
+	 */
+	def ResponseBean recoverPassword(String username, String email);
+
+	/**
+	 * 更新令牌
+	 * @param token 令牌
+	 * @return 结果集
+	 */
+	def ResponseBean refreshToken(String token);
+
+	/**
+	 * 退出登陆
+	 * @param token 令牌
+	 * @return 结果集
+	 */
+	def ResponseBean logout(String token);
+}
