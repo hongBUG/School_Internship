@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div id="app">
+			<!--双大括号表示按照变量名进行数据插值-->
+			<p>{{address}}</p>
+			<p>
+				<!--v-model属性值指的是vue中的属性名，vue会将包含v-model属性的标签的值实时传递给vue的属性值-->
+				<input type="text" placeholder="用户名" v-model="username"/>
+			</p>
+			<p>{{username}}</p>
+			<p v-html="username"></p>
+			<p>
+				<select v-model="city">
+					<option value="北京">北京</option>
+					<option value="上海">上海</option>
+					<option value="杭州">杭州</option>
+					<option value="广州">广州</option>
+				</select>
+			</p>
+			<p v-html="city"></p>
+			<p>
+				<input type="checkbox" value="管理员" v-model="role"  />管理员
+				<input type="checkbox" value="企业用户" v-model="role"  />企业用户
+				<input type="checkbox" value="求职者" v-model="role"  />求职者
+			</p>
+			<p v-html="role"></p>
+			<p>
+				<input type="text" v-model="age" placeholder="年龄" />
+			</p>
+			
+			<p v-if="age>=18"><button>报名</button></p>
+			<p v-if="age<18"><button>年龄过小</button></p>
+			<p v-show="age>=18"><button>报名</button></p>
+			<p v-show="age<18"><button>年龄过小</button></p>
+			<table border="solid" width="100%" align="center">
+				<tr>
+					<th>姓名</th>
+					<th>性别</th>
+					<th>年龄</th>
+				</tr>
+				<tr v-for="o in student" align="center">
+					<td>{{o.name}}</td>
+					<td>{{o.gender}}</td>
+					<td>{{o.age}}</td>
+				</tr>
+			</table>
+			<p>
+				<button @click="sayHello">sayHello</button>
+			</p>
+			<p>
+				<button v-tap="{method:sayHello}">sayHello</button>
+			</p>
+			<table border="solid" width="100%" align="center">
+				<tr>
+					<th>姓名</th>
+					<th>性别</th>
+					<th>年龄</th>
+				</tr>
+				<tr v-for="o in student" align="center">
+					<td>{{o.name|hideName}}</td>
+					<td>{{o.gender}}</td>
+					<td>{{o.age}}</td>
+				</tr>
+			</table>
+			<p>
+				<button v-tap=""></button>
+			<p :title="level">哈哈哈</p>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/vue.min.js" ></script>
+		<script type="text/javascript" src="demo_2.js" ></script>
+		<script type="text/javascript" src="../js/vue_tap.js" ></script>
+	</body>
+
+</html>

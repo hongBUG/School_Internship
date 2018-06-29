@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/style.css" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="login.css" />
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="mui-bar mui-bar-nav">
+			    <h1 class="mui-title">校园招聘</h1>
+			</header>
+			<div class="mui-content">
+			    <img class="banner" width="100%" src="image/banner.png"/>
+			    <dl class="tab">
+			    	<dt :class="{active: showPanel=='login'}" v-tap="{method:showLoginPanel}">账号密码登录</dt>
+			    	<dd></dd>
+			    	<dt :class="{active: showPanel=='registe'}" v-tap="{method:showRegistePanel}" >新用户注册</dt>
+			    </dl>
+			</div>
+			<div class="loginPanel" v-show="showPanel=='login'">
+				<input type="text" v-model="login.username" placeholder="用户名/手机号/邮箱" />
+				<input  type="password" v-model="login.password" placeholder="密码" />
+				<input type="button" value="登录" v-tap="{method:loginSystem}"/>
+				<p align="center"><a href="">忘记密码？</a></p>
+			</div>
+			<div class="registePanel" v-show="showPanel=='registe'">
+				<input type="text" v-model="registe.username" placeholder="用户名/手机号/邮箱" />
+				<input type="password" v-model="registe.password" placeholder="密码" />
+				<input type="password" v-model="registe.repassword" placeholder="确认密码" />
+				<input type="button" value="注册">
+			</div>
+		</div>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/vue.min.js"></script>
+		<script src="js/vue_tap.js"></script>
+		<script type="text/javascript" src="js/regexp.js" ></script>
+		<script type="text/javascript" src="login.js" ></script>
+	</body>
+</html>

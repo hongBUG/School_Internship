@@ -1,0 +1,12 @@
+*{
+	font-family:"微软雅黑" !important;
+}
+header{
+	background: linear-gradient(to right, #0099ff, #000000);
+	/*background-color: #0099ff !important;*/
+	box-shadow: none !important;
+}
+
+header h1 {
+	color: #FFFFFF !important;
+}
