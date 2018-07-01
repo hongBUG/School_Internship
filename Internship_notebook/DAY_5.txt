@@ -1,0 +1,16 @@
+App--》项目A  传统 登录 htttpsession
+	--》拆分  -》 N个服务器  》内部通讯依据  （Ali的dubbo协议）
+							》访问 》在某个服务器上产生session
+							》这时访问同一个项目的另一个模块(另一台服务器)   （登录信息存在app/浏览器上 加密 产生token(令牌)）
+							
+		JWT 生成令牌(username, secret) 用secret加密，  获得令牌信息 非secret  验证令牌信息(token, username, secret)
+		
+		登录成功后  根据用户名和密码生成登录令牌 密码用于加密令牌 
+					缓存令牌到redis中 
+					设置过期时间 
+					
+					返回登录成功信息和登录令牌
+					
+		localstorage   自己设定时间  maxStorage:16MB
+		sessionstorage   页面
+		二者存储时间不同
